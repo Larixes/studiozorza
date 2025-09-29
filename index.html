@@ -3,10 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moja Strona</title>
+    <title>Studio Zorza - Strona Testowa GTM</title>
+    <!-- Import Tailwind CSS dla łatwej stylizacji -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Użycie czcionki Inter dla lepszego wyglądu */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
 </head>
-<body>
-    <h1>Witaj na mojej stronie!</h1>
-    <p>To jest moja pierwsza strona opublikowana na GitHub Pages.</p>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Kontener całej strony -->
+    <div class="container mx-auto p-5 md:p-10 max-w-4xl">
+
+        <!-- Nagłówek -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-indigo-600">Studio Zorza</h1>
+            <p class="text-gray-500 mt-2">Strona demonstracyjna na potrzeby szkolenia z Google Tag Manager</p>
+        </header>
+
+        <!-- Główna treść -->
+        <main class="bg-white p-8 rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold mb-4">Witaj na stronie testowej!</h2>
+            <p class="mb-4">
+                Ta strona została stworzona, abyś mógł/mogła bezpiecznie ćwiczyć implementację tagów, reguł i zmiennych w Google Tag Manager. Możesz tutaj testować śledzenie różnych interakcji użytkownika.
+            </p>
+            <p class="font-semibold mb-2">Przykładowe scenariusze do przetestowania:</p>
+            <ul class="list-disc list-inside mb-6 space-y-2">
+                <li>Śledzenie odsłon tej strony (Page View).</li>
+                <li>Śledzenie kliknięć w przyciski (np. przycisk "Pobierz E-book").</li>
+                <li>Konfiguracja tagu śledzącego wysłanie formularza kontaktowego.</li>
+                <li>Testowanie zmiennych, np. przechwytywanie tekstu klikniętego przycisku.</li>
+            </ul>
+
+            <div class="text-center my-8">
+                <a href="#" id="download-button" class="bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-indigo-700 transition-colors shadow-lg">
+                    Pobierz darmowy E-book (Przycisk Testowy)
+                </a>
+            </div>
+
+            <div class="border-t border-gray-200 pt-6 mt-6">
+                <h3 class="text-xl font-bold mb-3">O co chodzi w GTM?</h3>
+                <p>
+                    Google Tag Manager to system zarządzania tagami, który pozwala na szybkie i łatwe aktualizowanie kodów śledzenia i powiązanych fragmentów kodu (zwanych tagami) w Twojej witrynie lub aplikacji mobilnej. Dzięki niemu nie musisz prosić programisty o każdą zmianę w kodzie śledzącym, co znacznie przyspiesza pracę analityczną i marketingową.
+                </p>
+            </div>
+        </main>
+
+        <!-- Sekcja z formularzem kontaktowym -->
+        <section id="contact-section" class="bg-white p-8 rounded-lg shadow-md mt-12">
+            <h2 class="text-2xl font-bold text-center mb-6">Formularz Kontaktowy</h2>
+
+            <!-- Formularz -->
+            <form id="contact-form" class="space-y-6">
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-700">Imię i nazwisko</label>
+                    <input type="text" id="name" name="name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700">Adres e-mail</label>
+                    <input type="email" id="email" name="email" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+                <div>
+                    <label for="message" class="block text-sm font-medium text-gray-700">Wiadomość</label>
+                    <textarea id="message" name="message" rows="4" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                </div>
+                <div>
+                    <button type="submit" id="submit-button" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Wyślij
+                    </button>
+                </div>
+            </form>
+
+            <!-- Wiadomość o sukcesie (początkowo ukryta) -->
+            <div id="success-message" class="hidden text-center p-8 border-2 border-dashed border-green-400 rounded-lg bg-green-50">
+                <h3 class="text-2xl font-bold text-green-800">Dziękujemy!</h3>
+                <p class="text-green-700 mt-2">Twój formularz został pomyślnie wysłany.</p>
+                <p class="text-gray-500 text-sm mt-4">(To jest wiadomość testowa. W rzeczywistości formularz nie został nigdzie wysłany).</p>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Skrypt JavaScript do obsługi formularza -->
+    <script>
+        // Znajdź interaktywne elementy na stronie
+        const contactForm = document.getElementById('contact-form');
+        const successMessage = document.getElementById('success-message');
+        const downloadButton = document.getElementById('download-button');
+
+        // --- ZDARZENIE #1: Kliknięcie w przycisk pobierania E-booka ---
+        downloadButton.addEventListener('click', function(event) {
+            // Zapobiegaj domyślnej akcji linku (#), która dodaje # na końcu adresu URL
+            event.preventDefault();
+
+            console.log('Kliknięto pobieranie e-booka');
+            if (window.dataLayer) {
+                window.dataLayer.push({
+                    'event': 'ebook_download',
+                    'ebook_title': 'Darmowy E-book GTM' // Przykładowa dodatkowa informacja
+                });
+            }
+            // W realnym scenariuszu tutaj nastąpiłoby faktyczne pobranie pliku
+        });
+
+
+        // --- ZDARZENIE #2: Wysłanie formularza kontaktowego z losowym ID ---
+        contactForm.addEventListener('submit', function(event) {
+            // Zapobiegaj domyślnej akcji wysyłania formularza (przeładowaniu strony)
+            event.preventDefault();
+
+            // Ukryj formularz
+            contactForm.style.display = 'none';
+
+            // Pokaż wiadomość o sukcesie, usuwając klasę 'hidden'
+            successMessage.classList.remove('hidden');
+
+            // Generowanie losowego ID dla wysłania formularza
+            const submissionID = 'form-' + Date.now() + '-' + Math.random().toString(36).substring(2, 9);
+
+            // Wywołanie kodu śledzącego z dodatkowymi danymi
+            console.log('Formularz wysłany (symulacja) z ID:', submissionID);
+            if (window.dataLayer) {
+                window.dataLayer.push({
+                    'event': 'form_submission_success',
+                    'form_name': 'contact',
+                    'submission_id': submissionID // Dodanie losowego ID do warstwy danych
+                });
+            }
+        });
+    </script>
+
 </body>
 </html>
+
